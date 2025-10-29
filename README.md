@@ -1,1 +1,1 @@
-midterm for creative coding
+Creative Coding Fall 2025 Midterm
