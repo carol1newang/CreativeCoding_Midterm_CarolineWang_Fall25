@@ -16,6 +16,7 @@ function setup(){
 
 function draw(){
   start();
+  brain();
   /*
   runTime = millis() - runEnd;
 
@@ -41,6 +42,15 @@ function draw(){
 
 function start(){
   noStroke();
+
+  fill(180, 200, 255);
+  beginShape();
+  vertex(0, 180);
+  vertex(600, 160);
+  vertex(600, 600);
+  vertex(0, 600);
+  endShape(CLOSE);
+
   fill(255);
   beginShape();
   vertex(50, 220);
@@ -111,6 +121,13 @@ function start(){
   ellipse(270, 335, 5, 5);
 }
 
+
+function brain(){
+  stroke(255);
+  fill(0);
+  strokeWeight(2);
+  ellipse(225, 230, 200, 100);
+}
 
 class bounce{
   constructor(x, y, xSpeed, ySpeed, c, size){
