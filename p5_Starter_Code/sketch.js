@@ -1,6 +1,6 @@
 let sceneOneBall; 
 let sceneTwoBalls = [];
-let runTime, runEnd;
+let runTime, runEnd, blinkTime, blinkEnd, eyesOpenTime;
 let ySpring = 550;
 let yAdd = 5;
 let goingDown = false;
@@ -10,125 +10,85 @@ function setup(){
   createCanvas(600,600);
   reset();
   runEnd = millis();
+  blinkEnd = millis();
+  eyesOpenTime = random(1000, 2000);
   sceneOneBall = new bounce(width/2, height/2, 0, 20, color(255, 0, 0), 150);
+
+  brain = new bubble(230, 240, 0.5);
+  brainLine = new lines(25, 230, 240, color(255));
+
+  bubbleOne = new bubble(250, 250, 0.45);
+  bubbleTwo = new bubble(250, 200, 0.45);
+  bubbleThree = new bubble(250, 200, 0.45);
+  bubbleFour = new bubble(250, 200, 0.45);
+
+  one = new start();
 }
 
 function draw(){
-  /*
-    start();
-    brain(); */
   runTime = millis() - runEnd;
+  blinkTime = millis() - blinkEnd;
 
-  if (runTime < 10000){
-    start();
-    brain();
+
+  one.display();
+  if (blinkTime<eyesOpenTime){
+    one.blink();
+
   }
-  else if (runTime < 2000){
+  else if (blinkTime<eyesOpenTime+50){
+    one.display();
+  }
+  else{
+    eyesOpenTime = random(500,2500);
+    blinkEnd = millis();
+  }
+
+  if(runTime<10000){
+    brain.display();
+    brainLine.display();
+    brainLine.update(150, 300, 200, 300);
+  }
+  else if (runTime < 20000){
+    bubbleOne.move(100, 180, 0.02);
+    bubbleOne.display();
+
+    bubbleTwo.move(230, 100, 0.02);
+    bubbleTwo.display();
+
+    bubbleThree.move(475, 250, 0.02);
+    bubbleThree.display();
+
+    bubbleFour.move(400, 120, 0.02);
+    bubbleFour.display();
+  }
+  else if (runTime < 30000){
     background(0);
     sceneOneBall.display();
     sceneOneBall.linearbounce();
   }
-  else if (runTime < 4000){
+  else if (runTime < 40000){
     background(0);
     for (let i = 0; i < sceneTwoBalls.length; i++) {
       sceneTwoBalls[i].display();
       sceneTwoBalls[i].wallbounce();
     }
   }
-  else if (runTime <6000){
+  else if (runTime <40002){
     sceneFour();
   }
-  else if (runTime < 8000){
+  else if(runTime < 50000){
+    background(0);
+  }
+  else if (runTime < 60000){
     for (let i = 0; i < sceneFiveLines.length; i++) {
-      sceneFiveLines[i].update();
+      sceneFiveLines[i].update(0, width, 0, height);
       sceneFiveLines[i].display();
     }
   }
   else {
     runEnd = millis ();
     reset();
-  }
-}
-
-function start(){
-  noStroke();
-
-  fill(180, 200, 255);
-  beginShape();
-  vertex(0, 180);
-  vertex(600, 160);
-  vertex(600, 600);
-  vertex(0, 600);
-  endShape(CLOSE);
-
-  fill(255);
-  beginShape();
-  vertex(50, 220);
-  vertex(440, 200);
-  vertex(460, 450);
-  vertex(70, 470);
-  endShape(CLOSE);
-
-  fill(100, 50, 255);
-  beginShape();
-  vertex(120, 220);
-  bezierVertex(70, 290, 160, 330, 110, 380);
-  bezierVertex(80, 430, 170, 480, 130, 520);
-  bezierVertex(100, 570, 150, 560, 150, 580);
-
-  vertex(380, 580);
-  vertex(360, 400);
-  endShape(CLOSE);
-
-  fill(150, 200, 255);
-  beginShape();
-  vertex(130, 250);
-  vertex(130, 340);
-  bezierVertex(130, 580, 370, 580, 370, 340);
-  vertex(370, 250);
-  endShape();
-
-  beginShape();
-  vertex(220, 400);
-  vertex(310, 400);
-  vertex(320, 550);
-  vertex(230, 550);
-  endShape();
-
-  fill(100, 50, 255);
-  beginShape();
-  vertex(110, 280);
-  bezierVertex(90, 120, 380, 120, 380, 280);
-  bezierVertex(370, 290, 190, 260, 180, 250);
-  bezierVertex(180, 260, 115, 290, 110, 280);
-  endShape(); 
-
-  beginShape();
-  vertex(330, 220);
-  bezierVertex(280, 290, 370, 330, 320, 380);
-  bezierVertex(290, 430, 380, 480, 340, 520);
-  bezierVertex(310, 570, 360, 560, 360, 580);
-
-  bezierVertex(370, 560, 350, 580, 390, 480);
-  bezierVertex(400, 410, 350, 400, 380, 350);
-  bezierVertex(400, 300, 380, 290, 380, 280);
-  endShape(CLOSE);
-
-  fill(255);
-  beginShape();
-  vertex(0, 550);
-  vertex(600, 530);
-  vertex(600, 600);
-  vertex(0, 600);
-  endShape(CLOSE);
-
-  stroke(100, 50, 255);
-  strokeWeight(5);
-  line(155, 320, 180, 310);
-  line(290, 310, 260, 305);
-
-  ellipse(165, 340, 5, 5);
-  ellipse(270, 335, 5, 5);
+  } 
 }
 
 
@@ -192,7 +152,7 @@ function reset(){
     let x = random(250, 350);
     let y = random(250, 350);
     let c = color(random(100,230), random(0,20), random(0,20));
-    sceneFiveLines.push(new lines(x, y, c));
+    sceneFiveLines.push(new lines(100, x, y, c));
   }
 }
 
@@ -235,36 +195,42 @@ function sceneFour(){
 }
 
 class lines {
-  constructor(x, y, c) {
-    this.x = x;
-    this.y = y;
+  constructor(length, startX, startY, c) {
+    this.length = length;
     this.c = c;
-    this.newX = x;
-    this.newY = y;
+    this.x = new Array(length);
+    this.y = new Array(length);
+
+    // initialize all points at the starting position
+    for (let i = 0; i < length; i++) {
+      this.x[i] = startX;
+      this.y[i] = startY;
+    }
   }
 
-  randomize() {
-    this.x = random(280, 320);
-    this.y = random(280, 320);
-    this.newX = this.x;
-    this.newY = this.y;
-    this.c = color(random(200, 255), random(0, 100), random(0, 100));
-  }
+  update(lowX, highX, lowY, highY) {
+    // move the head randomly
+    let newX = this.x[0] + random(-20, 20);
+    let newY = this.y[0] + random(-20, 20);
 
-  update() {
-    this.x = this.newX;
-    this.y = this.newY;
+    newX = constrain(newX, lowX, highX);
+    newY = constrain(newY, lowY, highY);
 
-    this.newX += random(-20, 20);
-    this.newY += random(-20, 20);
+    // shift all points down the array
+    for (let i = this.length - 1; i > 0; i--) {
+      this.x[i] = this.x[i - 1];
+      this.y[i] = this.y[i - 1];
+    }
 
-    this.newX = constrain(this.newX, 0, width);
-    this.newY = constrain(this.newY, 0, height);
+    this.x[0] = newX;
+    this.y[0] = newY;
   }
 
   display() {
-    strokeWeight(1);
     stroke(this.c);
-    line(this.x, this.y, this.newX, this.newY);  
+    strokeWeight(1);
+    for (let i = 1; i < this.length; i++) {
+      line(this.x[i - 1], this.y[i - 1], this.x[i], this.y[i]);
+    }
   }
 }
