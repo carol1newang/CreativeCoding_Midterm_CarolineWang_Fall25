@@ -10,28 +10,6 @@ let miniOneScale = 1;
 function setup(){
   createCanvas(600,600);
   reset();
-  runEnd = millis();
-  blinkEnd = millis();
-  eyesOpenTime = random(1000, 2000);
-  sceneOneBall = new bounce(width/2, height/2, 0, 20, color(255, 0, 0), 150);
-
-  miniSceneOne = new bounce(70, 180, 0, 2, color(255, 0, 0), 10);
-
-  brain = new bubble(230, 235, 0.5);
-  brainLineOne = new lines(10, 230, 240, color(255, 0, 0));
-  brainLineTwo = new lines(10, 230, 240, color(255, 0, 0));
-
-  miniBrainLineOne = new lines(10, 350, 150, color(255, 0, 0));
-
-  bubbleOne = new bubble(230, 235, 0, 0.4);
-  bubbleTwo = new bubble(230, 235, 0, 0.4);
-  bubbleThree = new bubble(230, 235, 0, 0.4);
-  bubbleFour = new bubble(230, 235, 0, 0.4);
-  bubbleOneGrow = new bubble(70, 180, 0.4, 5);
-
-  one = new start();
-
-  transitionBubble = new bubble(300, 300, 0, 10);
 }
 
 function draw(){
@@ -41,9 +19,9 @@ function draw(){
 
 
   one.display();
+
   if (blinkTime<eyesOpenTime){
     one.blink();
-
   }
   else if (blinkTime<eyesOpenTime+50){
     one.display();
@@ -53,7 +31,11 @@ function draw(){
     blinkEnd = millis();
   }
 
-  if(runTime < 30000){
+  if (runTime < 5000){
+
+  }
+  else if(runTime < 30000){
+    brain.grow(0.01);
     brain.display();
     brainLineOne.display();
     brainLineOne.update(160, 290, 200, 290, 10);
@@ -61,21 +43,18 @@ function draw(){
     brainLineTwo.display();
     brainLineTwo.update(160, 290, 200, 290, 10);
   }
-  else if (runTime < 40000){
+  else if (runTime < 35000){
     background(0);
     for (let i = 0; i < sceneTwoBalls.length; i++) {
       sceneTwoBalls[i].display();
       sceneTwoBalls[i].wallbounce();
     }
   }
-  else if (runTime <50000){
+  else if (runTime <40000){
     background (0);
     sceneFour();
   }
-  else if(runTime < 50002){
-    background(0);
-  }
-  else if (runTime < 60000){
+  else if (runTime < 50000){
     background (0);
     for (let i = 0; i < sceneFiveLines.length; i++) {
       sceneFiveLines[i].update(0, width, 0, height, 20);
@@ -86,69 +65,69 @@ function draw(){
     runEnd = millis ();
     reset();
   } 
-  if(runTime > 5000 && runTime < 30000){
+  if(runTime > 10000 && runTime < 30000){
     bubbleOne.move(70, 180, 0.02, 0.01);
     bubbleOne.grow(0.01);
     bubbleOne.display(); 
   }
-  if(runTime > 6000 && runTime < 30000){
+  if(runTime > 11000 && runTime < 30000){
     miniSceneOne.display();
     miniSceneOne.linearbounce(180, 190);
   }
-  if(runTime > 7000 && runTime < 30000){
+  if(runTime > 12000 && runTime < 30000){
     bubbleTwo.move(230, 100, 0.02, 0.01);
     bubbleTwo.grow(0.01);
     bubbleTwo.display();
   }
-  if(runTime > 8000 && runTime < 30000){
+  if(runTime > 13000 && runTime < 30000){
     push();
       scale(0.25);
       translate(600, 0);
       sceneFour();
     pop()
   }
-  if(runTime > 9000 && runTime < 30000){
+  if(runTime > 14000 && runTime < 30000){
     bubbleThree.move(400, 120, 0.01);
     bubbleThree.grow(0.01);
     bubbleThree.display();
   }
-  if(runTime > 10500 && runTime < 30000){
+  if(runTime > 15500 && runTime < 30000){
     miniBrainLineOne.update(350, 425, 100, 150, 10);
     miniBrainLineOne.display();
   }
-  if (runTime > 11000 && runTime < 30000){
+  if (runTime > 16000 && runTime < 30000){
     bubbleFour.move(475, 250, 0.01);
     bubbleFour.grow(0.01);
     bubbleFour.display();
   }
   if (runTime > 25000 && runTime < 30000){
-    bubbleOneGrow.grow(0.015);
+    bubbleOneGrow.grow(0.02);
     bubbleOneGrow.display();
   }
   if (runTime > 27000 && runTime <30000){
     sceneOneBall.display();
     sceneOneBall.linearbounce(250, 350);
   }
-  if (runTime > 39000 && runTime < 40000){
+  if (runTime > 34000 && runTime < 35000){
     transitionBubble.grow(0.05);
     transitionBubble.display();
   }
+  if (runTime > 39000 && runTime < 40000){
+    transitionBubble.grow(0.05);
+    transitionBubble.display();
+  } 
   if (runTime > 49000 && runTime < 50000){
     transitionBubble.grow(0.05);
     transitionBubble.display();
   } 
-  if (runTime > 59000 && runTime < 60000){
-    transitionBubble.grow(0.05);
-    transitionBubble.display();
-  } 
 
+  if(runTime > 33900 && runTime < 34000){
+    transitionBubble.size = 0;
+  }
   if(runTime > 38900 && runTime < 39000){
     transitionBubble.size = 0;
   }
   if(runTime > 48900 && runTime < 49000){
-    transitionBubble.size = 0;
-  }
-  if(runTime > 58900 && runTime < 59000){
     transitionBubble.size = 0;
   }
 }
@@ -217,13 +196,29 @@ function reset(){
     sceneFiveLines.push(new lines(200, x, y, c));
   }
 
+  runEnd = millis();
+  blinkEnd = millis();
+  eyesOpenTime = random(1000, 2000);
+  sceneOneBall = new bounce(width/2, height/2, 0, 20, color(255, 0, 0), 150);
+
+  miniSceneOne = new bounce(70, 180, 0, 2, color(255, 0, 0), 10);
+
+  brain = new bubble(230, 235, 0, 0.5);
+  brain.size = 0;
+  brainLineOne = new lines(10, 220, 230, color(255, 0, 0));
+  brainLineTwo = new lines(10, 220, 230, color(255, 0, 0));
+
+  miniBrainLineOne = new lines(10, 350, 150, color(255, 0, 0));
+
   bubbleOne = new bubble(230, 235, 0, 0.4);
   bubbleTwo = new bubble(230, 235, 0, 0.4);
   bubbleThree = new bubble(230, 235, 0, 0.4);
   bubbleFour = new bubble(230, 235, 0, 0.4);
   bubbleOneGrow = new bubble(70, 180, 0.4, 5);
-  transitionBubble = new bubble(300, 300, 0, 10);
 
+  one = new start();
+
+  transitionBubble = new bubble(300, 300, 0, 10);
 }
 
 function sceneFour(){
