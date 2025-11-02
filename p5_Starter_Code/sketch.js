@@ -5,6 +5,7 @@ let ySpring = 550;
 let yAdd = 5;
 let goingDown = false;
 let sceneFiveLines = [];
+let miniOneScale = 1;
 
 function setup(){
   createCanvas(600,600);
@@ -14,18 +15,27 @@ function setup(){
   eyesOpenTime = random(1000, 2000);
   sceneOneBall = new bounce(width/2, height/2, 0, 20, color(255, 0, 0), 150);
 
-  brain = new bubble(230, 240, 0.5);
-  brainLine = new lines(25, 230, 240, color(255));
+  miniSceneOne = new bounce(70, 180, 0, 2, color(255, 0, 0), 10);
 
-  bubbleOne = new bubble(250, 250, 0.45);
-  bubbleTwo = new bubble(250, 200, 0.45);
-  bubbleThree = new bubble(250, 200, 0.45);
-  bubbleFour = new bubble(250, 200, 0.45);
+  brain = new bubble(230, 235, 0.5);
+  brainLineOne = new lines(10, 230, 240, color(255, 0, 0));
+  brainLineTwo = new lines(10, 230, 240, color(255, 0, 0));
+
+  miniBrainLineOne = new lines(10, 350, 150, color(255, 0, 0));
+
+  bubbleOne = new bubble(230, 235, 0, 0.4);
+  bubbleTwo = new bubble(230, 235, 0, 0.4);
+  bubbleThree = new bubble(230, 235, 0, 0.4);
+  bubbleFour = new bubble(230, 235, 0, 0.4);
+  bubbleOneGrow = new bubble(70, 180, 0.4, 5);
 
   one = new start();
+
+  transitionBubble = new bubble(300, 300, 0, 10);
 }
 
 function draw(){
+  background(0);
   runTime = millis() - runEnd;
   blinkTime = millis() - blinkEnd;
 
@@ -43,28 +53,13 @@ function draw(){
     blinkEnd = millis();
   }
 
-  if(runTime<10000){
+  if(runTime < 30000){
     brain.display();
-    brainLine.display();
-    brainLine.update(150, 300, 200, 300);
-  }
-  else if (runTime < 20000){
-    bubbleOne.move(100, 180, 0.02);
-    bubbleOne.display();
+    brainLineOne.display();
+    brainLineOne.update(160, 290, 200, 290, 10);
 
-    bubbleTwo.move(230, 100, 0.02);
-    bubbleTwo.display();
-
-    bubbleThree.move(475, 250, 0.02);
-    bubbleThree.display();
-
-    bubbleFour.move(400, 120, 0.02);
-    bubbleFour.display();
-  }
-  else if (runTime < 30000){
-    background(0);
-    sceneOneBall.display();
-    sceneOneBall.linearbounce();
+    brainLineTwo.display();
+    brainLineTwo.update(160, 290, 200, 290, 10);
   }
   else if (runTime < 40000){
     background(0);
@@ -73,15 +68,17 @@ function draw(){
       sceneTwoBalls[i].wallbounce();
     }
   }
-  else if (runTime <40002){
+  else if (runTime <50000){
+    background (0);
     sceneFour();
   }
-  else if(runTime < 50000){
+  else if(runTime < 50002){
     background(0);
   }
   else if (runTime < 60000){
+    background (0);
     for (let i = 0; i < sceneFiveLines.length; i++) {
-      sceneFiveLines[i].update(0, width, 0, height);
+      sceneFiveLines[i].update(0, width, 0, height, 20);
       sceneFiveLines[i].display();
     }
   }
@@ -89,6 +86,71 @@ function draw(){
     runEnd = millis ();
     reset();
   } 
+  if(runTime > 5000 && runTime < 30000){
+    bubbleOne.move(70, 180, 0.02, 0.01);
+    bubbleOne.grow(0.01);
+    bubbleOne.display(); 
+  }
+  if(runTime > 6000 && runTime < 30000){
+    miniSceneOne.display();
+    miniSceneOne.linearbounce(180, 190);
+  }
+  if(runTime > 7000 && runTime < 30000){
+    bubbleTwo.move(230, 100, 0.02, 0.01);
+    bubbleTwo.grow(0.01);
+    bubbleTwo.display();
+  }
+  if(runTime > 8000 && runTime < 30000){
+    push();
+      scale(0.25);
+      translate(600, 0);
+      sceneFour();
+    pop()
+  }
+  if(runTime > 9000 && runTime < 30000){
+    bubbleThree.move(400, 120, 0.01);
+    bubbleThree.grow(0.01);
+    bubbleThree.display();
+  }
+  if(runTime > 10500 && runTime < 30000){
+    miniBrainLineOne.update(350, 425, 100, 150, 10);
+    miniBrainLineOne.display();
+  }
+  if (runTime > 11000 && runTime < 30000){
+    bubbleFour.move(475, 250, 0.01);
+    bubbleFour.grow(0.01);
+    bubbleFour.display();
+  }
+  if (runTime > 25000 && runTime < 30000){
+    bubbleOneGrow.grow(0.015);
+    bubbleOneGrow.display();
+  }
+  if (runTime > 27000 && runTime <30000){
+    sceneOneBall.display();
+    sceneOneBall.linearbounce(250, 350);
+  }
+  if (runTime > 39000 && runTime < 40000){
+    transitionBubble.grow(0.05);
+    transitionBubble.display();
+  }
+  if (runTime > 49000 && runTime < 50000){
+    transitionBubble.grow(0.05);
+    transitionBubble.display();
+  } 
+  if (runTime > 59000 && runTime < 60000){
+    transitionBubble.grow(0.05);
+    transitionBubble.display();
+  } 
+
+  if(runTime > 38900 && runTime < 39000){
+    transitionBubble.size = 0;
+  }
+  if(runTime > 48900 && runTime < 49000){
+    transitionBubble.size = 0;
+  }
+  if(runTime > 58900 && runTime < 59000){
+    transitionBubble.size = 0;
+  }
 }
 
 
@@ -115,9 +177,9 @@ class bounce{
     ellipse(this.x, this.y, this.size, this.size);
   }
 
-  linearbounce(){
+  linearbounce(lowY, highY){
     this.y += this.ySpeed;
-    if(this.y<=250 || this.y >= 350){
+    if(this.y<=lowY || this.y >= highY){
       this.ySpeed *= -1;
     }
   }
@@ -152,14 +214,21 @@ function reset(){
     let x = random(250, 350);
     let y = random(250, 350);
     let c = color(random(100,230), random(0,20), random(0,20));
-    sceneFiveLines.push(new lines(100, x, y, c));
+    sceneFiveLines.push(new lines(200, x, y, c));
   }
+
+  bubbleOne = new bubble(230, 235, 0, 0.4);
+  bubbleTwo = new bubble(230, 235, 0, 0.4);
+  bubbleThree = new bubble(230, 235, 0, 0.4);
+  bubbleFour = new bubble(230, 235, 0, 0.4);
+  bubbleOneGrow = new bubble(70, 180, 0.4, 5);
+  transitionBubble = new bubble(300, 300, 0, 10);
+
 }
 
 function sceneFour(){
-  background(0);
-  stroke(255);
-  strokeWeight(1);
+  stroke(255, 0, 0);
+  strokeWeight(2);
   fill(0,0);
 
   beginShape();
@@ -201,22 +270,19 @@ class lines {
     this.x = new Array(length);
     this.y = new Array(length);
 
-    // initialize all points at the starting position
     for (let i = 0; i < length; i++) {
       this.x[i] = startX;
       this.y[i] = startY;
     }
   }
 
-  update(lowX, highX, lowY, highY) {
-    // move the head randomly
-    let newX = this.x[0] + random(-20, 20);
-    let newY = this.y[0] + random(-20, 20);
+  update(lowX, highX, lowY, highY, distance) {
+    let newX = this.x[0] + random(-distance, distance);
+    let newY = this.y[0] + random(-distance, distance);
 
     newX = constrain(newX, lowX, highX);
     newY = constrain(newY, lowY, highY);
 
-    // shift all points down the array
     for (let i = this.length - 1; i > 0; i--) {
       this.x[i] = this.x[i - 1];
       this.y[i] = this.y[i - 1];
