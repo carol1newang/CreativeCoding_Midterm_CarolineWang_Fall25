@@ -1,37 +1,43 @@
-let sceneOneBalls = [];
-let sceneTwoBall; 
+let sceneOneBall; 
+let sceneTwoBalls = [];
 let runTime, runEnd;
 let sceneTwoSpeed = 10;
 let ySpring = 550;
 let yAdd = 5;
 let goingDown = false;
 
-
 function setup(){
   createCanvas(600,600);
   reset();
 
-  sceneTwoBall = new bounce(width/2, height/2, 0, sceneTwoSpeed, color(255, 0, 0), 150);
+  sceneOneBall = new bounce(width/2, height/2, 0, sceneTwoSpeed, color(255, 0, 0), 150);
+  sceneFiveLines = new lines(300, 300, 2, 2, color(255,0,0));
 }
 
 function draw(){
-  start();
-  brain();
+  sceneFiveLines.update();
+  sceneFiveLines.display();
   /*
-  runTime = millis() - runEnd;
+    start();
+    brain(); */
+/*  runTime = millis() - runEnd;
 
-  if (runTime < 2000){
-    background(0);
-    sceneTwoBall.display();
-    sceneTwoBall.run(280, 320, 280, 320);
+  if (runTime < 10000){
+    start();
+    brain();
   }
-  else if (runTime < 4000){
+  else if (runTime < 12000){
     background(0);
-    for (let i = 0; i < sceneOneBalls.length; i++) {
-    sceneOneBalls[i].display();
-    sceneOneBalls[i].run(0, width, 0, height);
+    sceneOneBall.display();
+    sceneOneBall.bounce(280, 320, 280, 320);
+  }
+  else if (runTime < 14000){
+    background(0);
+    for (let i = 0; i < sceneTwoBalls.length; i++) {
+    sceneTwoBalls[i].display();
+    sceneTwoBalls[i].bounce(0, width, 0, height);
   }}
-  else if (runTime < 10000){
+  else if (runTime <16000){
     sceneFour();
   }
   else {
@@ -145,7 +151,7 @@ class bounce{
     ellipse(this.x, this.y, this.size, this.size);
   }
 
-  run(lowX, highX, lowY, highY){
+  bounce(lowX, highX, lowY, highY){
     this.x += this.xSpeed;
     this.y += this.ySpeed;
     if(this.x<=lowX || this.x >= highX){
@@ -160,14 +166,14 @@ class bounce{
 
 function reset(){
   background(0);
-  sceneOneBalls =[];
+  sceneTwoBalls =[];
   for(let i = 0; i<50; i++){
     let x = random(250,350);
     let y = random(250,350);
     let xSpeed = random (-30, 30);
     let ySpeed = random (-30, 30);
     let c = color(random(180,230), random(0,100), random(0,100));
-    sceneOneBalls.push(new bounce(x, y, xSpeed, ySpeed, c, 50));
+    sceneTwoBalls.push(new bounce(x, y, xSpeed, ySpeed, c, 50));
   } 
 }
 
@@ -206,5 +212,37 @@ function sceneFour(){
   } 
   if (yAdd < 5) {
     goingDown = false;
+  }
+}
+
+class lines {
+  constructor(x, y, xSpeed, ySpeed, c) {
+    this.x = x;
+    this.y = y;
+    this.xSpeed = xSpeed;
+    this.ySpeed = ySpeed;
+    this.c = c;
+  }
+
+  randomize() {
+    this.x = random(width);
+    this.y = random(height);
+    this.xSpeed = random(1, 6);
+    this.ySpeed = random(1, 6);
+    this.c = color(random(150, 255), random(50, 200), random(50, 200));
+  }
+
+  update() {
+    this.x += random(-this.xSpeed, this.xSpeed);
+    this.y += random(-this.ySpeed, this.ySpeed);
+
+    this.x = constrain(this.x, 0, width);
+    this.y = constrain(this.y, 0, height);
+  }
+
+  display() {
+    strokeWeight(2);
+    stroke(this.c);
+    point(this.x, this.y);  
   }
 }
