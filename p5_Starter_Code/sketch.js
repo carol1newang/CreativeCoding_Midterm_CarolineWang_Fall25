@@ -38,10 +38,10 @@ function draw(){
     brain.grow(0.01);
     brain.display();
     brainLineOne.display();
-    brainLineOne.update(160, 290, 200, 290, 10);
+    brainLineOne.update(160, 290, 200, 280, 10);
 
     brainLineTwo.display();
-    brainLineTwo.update(160, 290, 200, 290, 10);
+    brainLineTwo.update(160, 290, 200, 280, 10);
   }
   else if (runTime < 35000){
     background(0);
@@ -108,7 +108,7 @@ function draw(){
   if (runTime > 17500 && runTime < 30000){
     push();
       scale(0.25);
-      translate(1600, 750);
+      translate(1600, 725);
       sceneFive.display();
       sceneFive.update();
     pop();
@@ -133,7 +133,7 @@ function draw(){
     transitionBubble.grow(0.05);
     transitionBubble.display();
   } 
-  if (runTime > 54000 && runTime < 55000){
+  if (runTime > 59000 && runTime < 60000){
     transitionBubble.grow(0.05);
     transitionBubble.display();
   }
@@ -147,7 +147,7 @@ function draw(){
   if(runTime > 48900 && runTime < 49000){
     transitionBubble.size = 0;
   }
-  if(runTime > 53900 && runTime < 54000){
+  if(runTime > 58900 && runTime < 59000){
     transitionBubble.size = 0;
   }
 }
