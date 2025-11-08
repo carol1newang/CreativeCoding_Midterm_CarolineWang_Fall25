@@ -1,6 +1,6 @@
-class start {
+class face {
   constructor() {
-    this.blinkEnd = millis();
+
   }
 
   display() {
@@ -80,12 +80,6 @@ class start {
     vertex(600, 600);
     vertex(0, 600);
     endShape(CLOSE);
-
-    // eyebrows
-    stroke(100, 50, 255);
-    strokeWeight(5);
-    line(155, 320, 180, 310);
-    line(290, 310, 260, 305);
   }
 
  blink() {
@@ -93,5 +87,12 @@ class start {
       noStroke();
       ellipse(165, 340, 5, 5);
       ellipse(270, 335, 5, 5);
+  }
+
+  brows(browY) {
+    stroke(100, 50, 255);
+    strokeWeight(5);
+    line(155, browY, 180, 310);
+    line(290, browY-10, 260, 305);
   }
 }
