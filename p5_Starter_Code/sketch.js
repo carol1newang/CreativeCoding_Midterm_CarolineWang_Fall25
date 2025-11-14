@@ -20,6 +20,7 @@ function setup(){
 function draw(){
   background(0);
 
+  // setting up timers to time scenes and loop
   runTime = millis() - runEnd;
   blinkTime = millis() - blinkEnd;
 
@@ -100,7 +101,7 @@ function draw(){
   // --- RESET ---
   else if (runTime < 62000){
     displayFace.display();
-    displayFace.brows(browY);
+    displayFace.brows(313);
   }
   else {
     reset();
